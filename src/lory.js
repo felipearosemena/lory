@@ -378,7 +378,15 @@ export function lory (slider, opts) {
     let delta;
     let isScrolling;
 
-    function onTransitionEnd () {
+    function onTransitionEnd (e) {
+
+        // Only fire transitionEnd if the target is the actual slideContainer
+        if(e.target !== slideContainer) {
+            return
+        }
+
+        dispatchSliderEvent('after', 'transition')
+
         if (transitionEndCallback) {
             transitionEndCallback();
 
