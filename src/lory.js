@@ -24,6 +24,7 @@ export function lory (slider, opts) {
 
     let index   = 0;
     let options = {};
+    let wWidth  = window.innerWidth;
 
     /**
      * if object is jQuery convert to native DOM element
@@ -515,6 +516,14 @@ export function lory (slider, opts) {
     }
 
     function onResize (event) {
+
+        // Only resize if the window width has actually changed
+        if(window.innerWidth == wWidth) {
+            return;
+        } else {
+            wWidth = window.innerWidth;
+        }
+
         reset();
 
         dispatchSliderEvent('on', 'resize', {
