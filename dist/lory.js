@@ -105,6 +105,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    var index = 0;
 	    var options = {};
+	    var wWidth = window.innerWidth;
 	
 	    /**
 	     * if object is jQuery convert to native DOM element
@@ -118,8 +119,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * set active class to element which is the current slide
 	     */
 	    function setActiveElement(slides, currentIndex) {
-	        var _options = options;
-	        var classNameActiveSlide = _options.classNameActiveSlide;
+	        var _options = options,
+	            classNameActiveSlide = _options.classNameActiveSlide;
 	
 	
 	        slides.forEach(function (element, index) {
@@ -139,8 +140,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @return {array} array of updated slideContainer elements
 	     */
 	    function setupInfinite(slideArray) {
-	        var _options2 = options;
-	        var infinite = _options2.infinite;
+	        var _options2 = options,
+	            infinite = _options2.infinite;
 	
 	
 	        var front = slideArray.slice(0, infinite);
@@ -202,14 +203,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @direction  {boolean}
 	     */
 	    function slide(nextIndex, direction) {
-	        var _options3 = options;
-	        var slideSpeed = _options3.slideSpeed;
-	        var slidesToScroll = _options3.slidesToScroll;
-	        var infinite = _options3.infinite;
-	        var rewind = _options3.rewind;
-	        var rewindSpeed = _options3.rewindSpeed;
-	        var ease = _options3.ease;
-	        var classNameActiveSlide = _options3.classNameActiveSlide;
+	        var _options3 = options,
+	            slideSpeed = _options3.slideSpeed,
+	            slidesToScroll = _options3.slidesToScroll,
+	            infinite = _options3.infinite,
+	            rewind = _options3.rewind,
+	            rewindSpeed = _options3.rewindSpeed,
+	            ease = _options3.ease,
+	            classNameActiveSlide = _options3.classNameActiveSlide;
 	
 	
 	        var duration = slideSpeed;
@@ -297,13 +298,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        prefixes = (0, _detectPrefixes2.default)();
 	        options = _extends({}, _defaults2.default, opts);
 	
-	        var _options4 = options;
-	        var classNameFrame = _options4.classNameFrame;
-	        var classNameSlideContainer = _options4.classNameSlideContainer;
-	        var classNamePrevCtrl = _options4.classNamePrevCtrl;
-	        var classNameNextCtrl = _options4.classNameNextCtrl;
-	        var enableMouseEvents = _options4.enableMouseEvents;
-	        var classNameActiveSlide = _options4.classNameActiveSlide;
+	        var _options4 = options,
+	            classNameFrame = _options4.classNameFrame,
+	            classNameSlideContainer = _options4.classNameSlideContainer,
+	            classNamePrevCtrl = _options4.classNamePrevCtrl,
+	            classNameNextCtrl = _options4.classNameNextCtrl,
+	            enableMouseEvents = _options4.enableMouseEvents,
+	            classNameActiveSlide = _options4.classNameActiveSlide;
 	
 	
 	        frame = slider.getElementsByClassName(classNameFrame)[0];
@@ -350,12 +351,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * reset function: called on resize
 	     */
 	    function reset() {
-	        var _options5 = options;
-	        var infinite = _options5.infinite;
-	        var ease = _options5.ease;
-	        var rewindSpeed = _options5.rewindSpeed;
-	        var rewindOnResize = _options5.rewindOnResize;
-	        var classNameActiveSlide = _options5.classNameActiveSlide;
+	        var _options5 = options,
+	            infinite = _options5.infinite,
+	            ease = _options5.ease,
+	            rewindSpeed = _options5.rewindSpeed,
+	            rewindOnResize = _options5.rewindOnResize,
+	            classNameActiveSlide = _options5.classNameActiveSlide;
 	
 	
 	        slidesWidth = slideContainer.getBoundingClientRect().width || slideContainer.offsetWidth;
@@ -466,7 +467,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var delta = void 0;
 	    var isScrolling = void 0;
 	
-	    function onTransitionEnd() {
+	    function onTransitionEnd(e) {
+	
+	        // Only fire transitionEnd if the target is the actual slideContainer
+	        if (e.target !== slideContainer) {
+	            return;
+	        }
+	
+	        dispatchSliderEvent('after', 'transition');
+	
 	        if (transitionEndCallback) {
 	            transitionEndCallback();
 	
@@ -475,8 +484,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	
 	    function onTouchstart(event) {
-	        var _options6 = options;
-	        var enableMouseEvents = _options6.enableMouseEvents;
+	        var _options6 = options,
+	            enableMouseEvents = _options6.enableMouseEvents;
 	
 	        var touches = event.touches ? event.touches[0] : event;
 	
@@ -489,8 +498,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        frame.addEventListener('touchmove', onTouchmove);
 	        frame.addEventListener('touchend', onTouchend);
 	
-	        var pageX = touches.pageX;
-	        var pageY = touches.pageY;
+	        var pageX = touches.pageX,
+	            pageY = touches.pageY;
 	
 	
 	        touchOffset = {
@@ -510,8 +519,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    function onTouchmove(event) {
 	        var touches = event.touches ? event.touches[0] : event;
-	        var pageX = touches.pageX;
-	        var pageY = touches.pageY;
+	        var pageX = touches.pageX,
+	            pageY = touches.pageY;
 	
 	
 	        delta = {
@@ -598,6 +607,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	
 	    function onResize(event) {
+	
+	        // Only resize if the window width has actually changed
+	        if (window.innerWidth == wWidth) {
+	            return;
+	        } else {
+	            wWidth = window.innerWidth;
+	        }
+	
 	        reset();
 	
 	        dispatchSliderEvent('on', 'resize', {
@@ -743,7 +760,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = useNative() ? NativeCustomEvent :
 	
 	// IE >= 9
-	'function' === typeof document.createEvent ? function CustomEvent (type, params) {
+	'undefined' !== typeof document && 'function' === typeof document.createEvent ? function CustomEvent (type, params) {
 	  var e = document.createEvent('CustomEvent');
 	  if (params) {
 	    e.initCustomEvent(type, params.bubbles, params.cancelable, params.detail);
