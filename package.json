@@ -13,12 +13,12 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://raw.githubusercontent.com/meandmax/lory/master/LICENSE"
+      "url": "https://raw.githubusercontent.com/felipearosemena/lory/master/LICENSE"
     }
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/meandmax/lory.git"
+    "url": "http://github.com/felipearosemena/lory.git"
   },
   "keywords": [
     "responsive",
